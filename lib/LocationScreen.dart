@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'RegisterScreen.dart';
 import 'StyleUtils.dart';
-import 'UserScreen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LocationScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LocationScreenState createState() => _LocationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LocationScreenState extends State<LocationScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  Widget _buildUserTextField() {
+  Widget _buildNameTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Usuario',
+          'Nombre',
           style: textFieldLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -29,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
             keyboardType: TextInputType.name,
             validator: (value) {
               if (value.isEmpty) {
-                return 'Campo usuario vacío';
+                return 'Campo nombre vacío';
               }
               return null;
             },
@@ -38,10 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
-                Icons.account_circle,
+                Icons.map,
                 color: Colors.white,
               ),
-              hintText: 'Ingresa tu usuario',
+              hintText: 'Ingresa un nombre',
               hintStyle: textFieldHintTextStyle,
             ),
           ),
@@ -50,12 +49,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildPasswordTextField() {
+  Widget _buildCapacityTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Contraseña',
+          'Capacidad',
           style: textFieldLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -64,25 +63,22 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: textFieldBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            obscureText: true,
+            keyboardType: TextInputType.number,
             validator: (value) {
               if (value.isEmpty) {
-                return 'Campo password vacío';
+                return 'Campo capacidad vacío';
               }
               return null;
             },
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
+            style: textFieldTextStyle,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
-                Icons.lock,
+                Icons.home,
                 color: Colors.white,
               ),
-              hintText: 'Ingresa tu contraseña',
+              hintText: 'Ingresa la capacidad',
               hintStyle: textFieldHintTextStyle,
             ),
           ),
@@ -91,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildCreateBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -101,8 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
           if (_formKey.currentState.validate()) {
             // Process data.
           }
-          //Test
-          Navigator.push(context, MaterialPageRoute(builder: (context) => UserScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -110,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         color: Colors.white,
         child: Text(
-          'INGRESA',
+          'CREAR',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -123,31 +117,29 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildRegisterBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
-      },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '¿No tenés cuenta? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Registrate',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+  Widget _buildBackBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.white,
+        child: Text(
+          'VOLVER',
+          style: TextStyle(
+            color: Color(0xFF527DAA),
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
         ),
       ),
     );
@@ -162,13 +154,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Login', style: subtitleTextStyle),
+                    Text('Locación', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
-                    _buildUserTextField(),
+                    _buildNameTextField(),
                     SizedBox(height: 30.0),
-                    _buildPasswordTextField(),
-                    _buildLoginBtn(),
-                    _buildRegisterBtn(),
+                    _buildCapacityTextField(),
+                    _buildCreateBtn(),
+                    _buildBackBtn(),
                   ],
                 )
             )
