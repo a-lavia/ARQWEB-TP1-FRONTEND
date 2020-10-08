@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'LocationScreen.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
+import 'CheckIn.dart';
+import 'Informar.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -45,7 +47,22 @@ class _UserScreenState extends State<UserScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-
+          showDialog(
+          context: context, 
+          builder: (context)=> AlertDialog(
+            title: Text(''),
+            content: Text('Escanee el codigo QR para ingresar por favor'),
+            actions: <Widget> [
+              FlatButton(
+                child: Text('Aceptar'),
+                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CheckIn()));},
+              ),
+              FlatButton(
+                child: Text('Cancelar'),
+                onPressed: (){Navigator.of(context).pop();},
+              )
+            ],)
+            );
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -101,7 +118,7 @@ class _UserScreenState extends State<UserScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Informar()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
