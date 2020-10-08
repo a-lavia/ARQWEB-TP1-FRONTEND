@@ -1,45 +1,16 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
-import 'Informar.dart';
 import 'UserScreen.dart';
 
-class UserPotencialContagioScreen extends StatefulWidget {
+class Informar extends StatefulWidget {
   @override
-  _UserPotencialContagioScreenState createState() => _UserPotencialContagioScreenState();
+  _InformarState createState() => _InformarState();
 }
 
-class _UserPotencialContagioScreenState extends State<UserPotencialContagioScreen> {
-
-  Widget _buildTestPositiveBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Informar()));
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'TESTEO POSITIVO',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTestNegativeBtn() {
+class _InformarState extends State<Informar> {
+  final _formKey = GlobalKey<FormState>();
+ Widget _buildAltaMedicaBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -54,7 +25,7 @@ class _UserPotencialContagioScreenState extends State<UserPotencialContagioScree
         ),
         color: Colors.white,
         child: Text(
-          'TESTEO NEGATIVO',
+          'ALTA MEDICA',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -67,7 +38,7 @@ class _UserPotencialContagioScreenState extends State<UserPotencialContagioScree
     );
   }
 
- Widget _buildExitBtn() {
+  Widget _buildBackBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -82,7 +53,7 @@ class _UserPotencialContagioScreenState extends State<UserPotencialContagioScree
         ),
         color: Colors.white,
         child: Text(
-          'SALIR',
+          'VOLVER',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -95,21 +66,24 @@ class _UserPotencialContagioScreenState extends State<UserPotencialContagioScree
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BackgroundFrame(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Bienvenido @usuario', style: subtitleTextStyle),
-              _buildTestPositiveBtn(),
-              _buildTestNegativeBtn(),
-              _buildExitBtn()
-
-            ],
-          )
-      )
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('', style: subtitleTextStyle),                    
+                    SizedBox(height: 30.0),
+                    _buildAltaMedicaBtn(),
+                    _buildBackBtn()
+                  ],
+                )
+            )
+        )
     );
   }
 }

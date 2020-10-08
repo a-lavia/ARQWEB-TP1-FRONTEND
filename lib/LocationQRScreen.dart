@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
-import 'RegisterScreen.dart';
 import 'package:qr/qr.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'StyleUtils.dart';
