@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'RegisterScreen.dart';
+import 'LocationQRScreen.dart';
 import 'StyleUtils.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -94,6 +95,7 @@ class _LocationScreenState extends State<LocationScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQrScreen()));  //Esta linea debe ir desp de la validacion de los datos esta aca ahora para poder continuar
           if (_formKey.currentState.validate()) {
             // Process data.
           }
