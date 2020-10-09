@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class CheckIn extends StatefulWidget {
   @override
@@ -8,10 +9,32 @@ class CheckIn extends StatefulWidget {
 }
 
 class _CheckInState extends State<CheckIn> {
-  final _formKey = GlobalKey<FormState>();
+   ScanResult _scanResult;
 
-  
-  Widget _buildBackBtn() {
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+        body: BackgroundFrame(
+        child:_scanResult==null?Text('Esperando datos de código'):Column(
+          children: [
+            Text('Contenido: ${_scanResult.rawContent}'),
+            Text('Formato: ${_scanResult.format.toString()}'),
+            _buildBackBtn()
+          ],
+        )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          _scanCode();
+        },
+        child: Icon(Icons.camera),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+    Widget _buildBackBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -39,24 +62,12 @@ class _CheckInState extends State<CheckIn> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: BackgroundFrame(
-            child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('', style: subtitleTextStyle),
-                    SizedBox(height: 30.0),
-                    SizedBox(height: 30.0),
-                    _buildBackBtn(),
-                  ],
-                )
-            )
-        )
-    );
+
+  Future<void> _scanCode() async {
+    var result = await BarcodeScanner.scan();
+    setState(() {
+      _scanResult = result;
+    });
   }
 
 }
