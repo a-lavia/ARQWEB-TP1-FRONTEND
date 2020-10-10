@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'StyleUtils.dart';
 
 class BackgroundFrame extends StatelessWidget {
-  BackgroundFrame({Key key, this.child}) : assert(child != null), super(key: key);
+  BackgroundFrame({Key key, this.child})
+      : assert(child != null),
+        super(key: key);
   final Widget child;
 
   @override
@@ -31,24 +33,18 @@ class BackgroundFrame extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 40.0,
-                vertical: 120.0,
+                vertical: 20.0,
               ),
-              child: Text(
-                '#YoEstuveAhí',
-                style: titleTextStyle
-              ),
-            )
-        ),
+              child: Text('#YoEstuveAhí', style: titleTextStyle),
+            )),
         Container(
-          height: double.infinity,
-          child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 40.0,
-                vertical: 120.0,
-              ),
-              child: child
-          )
-        )
+            height: double.infinity,
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                  vertical: 120.0,
+                ),
+                child: child))
       ],
     );
   }

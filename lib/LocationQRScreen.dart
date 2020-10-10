@@ -11,28 +11,30 @@ class LocationQrScreen extends StatefulWidget {
 
 class _LocationQrScreenState extends State<LocationQrScreen> {
   final _formKey = GlobalKey<FormState>();
-  final String data = "12345680"; // ESTE DATA TIENE Q SER EL ID CUANDO RECIBIMOS DEL BACK!
+  final String data =
+      "12345680"; // ESTE DATA TIENE Q SER EL ID CUANDO RECIBIMOS DEL BACK!
 
-
-   Widget _qr(BuildContext context) {
+  Widget _qr(BuildContext context) {
     return Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(height: 16,),
-            QrImage(
-              data: data,
-              gapless: true,
-              size: 250,
-              errorCorrectionLevel: QrErrorCorrectLevel.H,
-              backgroundColor: Colors.white,
-            )
-          ],
-        ),
-      );
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: 16,
+          ),
+          QrImage(
+            data: data,
+            gapless: true,
+            size: 250,
+            errorCorrectionLevel: QrErrorCorrectLevel.H,
+            backgroundColor: Colors.white,
+          )
+        ],
+      ),
+    );
   }
 
-   Widget _buildBackBtn() {
+  Widget _buildBackBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -66,17 +68,13 @@ class _LocationQrScreenState extends State<LocationQrScreen> {
         body: BackgroundFrame(
             child: Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
                   children: <Widget>[
                     Text('QR para Locacion', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
                     _qr(context),
                     _buildBackBtn(),
                   ],
-                )
-            )
-        )
-    );
+                ))));
   }
 }
