@@ -94,7 +94,11 @@ class _LocationScreenState extends State<LocationScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQrScreen()));  //Esta linea debe ir desp de la validacion de los datos esta aca ahora para poder continuar
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      LocationQrScreen())); //Esta linea debe ir desp de la validacion de los datos esta aca ahora para poder continuar
           if (_formKey.currentState.validate()) {
             // Process data.
           }
@@ -152,8 +156,8 @@ class _LocationScreenState extends State<LocationScreen> {
         body: BackgroundFrame(
             child: Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Locación', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
@@ -163,9 +167,6 @@ class _LocationScreenState extends State<LocationScreen> {
                     _buildCreateBtn(),
                     _buildBackBtn(),
                   ],
-                )
-            )
-        )
-    );
+                ))));
   }
 }

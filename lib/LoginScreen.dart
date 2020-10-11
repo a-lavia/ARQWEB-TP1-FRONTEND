@@ -102,7 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
             // Process data.
           }
           //Test
-          Navigator.push(context, MaterialPageRoute(builder: (context) => UserScreen()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => UserScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -126,7 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildRegisterBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
       },
       child: RichText(
         text: TextSpan(
@@ -159,8 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
         body: BackgroundFrame(
             child: Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Login', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
@@ -170,9 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     _buildLoginBtn(),
                     _buildRegisterBtn(),
                   ],
-                )
-            )
-        )
-    );
+                ))));
   }
 }

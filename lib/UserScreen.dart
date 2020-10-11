@@ -13,7 +13,6 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-
   Widget _buildRegisterLocationBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -21,7 +20,8 @@ class _UserScreenState extends State<UserScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => LocationScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LocationScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -50,21 +50,29 @@ class _UserScreenState extends State<UserScreen> {
         elevation: 5.0,
         onPressed: () {
           showDialog(
-          context: context, 
-          builder: (context)=> AlertDialog(
-            title: Text(''),
-            content: Text('Escanee el codigo QR para ingresar por favor'),
-            actions: <Widget> [
-              FlatButton(
-                child: Text('Aceptar'),
-                onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CheckIn()));},
-              ),
-              FlatButton(
-                child: Text('Cancelar'),
-                onPressed: (){Navigator.of(context).pop();},
-              )
-            ],)
-            );
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(''),
+                    content:
+                        Text('Escanee el codigo QR para ingresar por favor'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Aceptar'),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CheckIn()));
+                        },
+                      ),
+                      FlatButton(
+                        child: Text('Cancelar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -92,7 +100,8 @@ class _UserScreenState extends State<UserScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => VerLocationsScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => VerLocationsScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -120,7 +129,8 @@ class _UserScreenState extends State<UserScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Informar()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Informar()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -169,7 +179,6 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-
   Widget _buildExitBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -202,20 +211,17 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: BackgroundFrame(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Bienvenido @usuario', style: subtitleTextStyle),
-              _buildRegisterLocationBtn(),
-              _buildCheckInBtn(),
-              _buildCheckOutBtn(),
-              _buildInformBtn(),
-              _buildVerLocacionBtn(),
-              _buildExitBtn()
-
-            ],
-          )
-      )
-    );
+            child: ListView(
+      //mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('Bienvenido @usuario', style: subtitleTextStyle),
+        _buildRegisterLocationBtn(),
+        _buildCheckInBtn(),
+        _buildCheckOutBtn(),
+        _buildInformBtn(),
+        _buildVerLocacionBtn(),
+        _buildExitBtn()
+      ],
+    )));
   }
 }

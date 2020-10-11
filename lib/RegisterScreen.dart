@@ -191,8 +191,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: BackgroundFrame(
             child: Form(
                 key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Registro', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
@@ -203,11 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     _buildPasswordTextField(),
                     _buildRegisterBtn(),
                     _buildBackBtn()
-
                   ],
-                )
-            )
-        )
-    );
+                ))));
   }
 }
