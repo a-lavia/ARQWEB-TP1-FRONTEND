@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:yoestuveahi/AdminScreen.dart';
 import 'BackgroundFrame.dart';
 import 'RegisterScreen.dart';
 import 'StyleUtils.dart';
 import 'UserScreen.dart';
+import 'AdminScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController  user = new TextEditingController();
 
   Widget _buildUserTextField() {
     return Column(
@@ -27,11 +30,10 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60.0,
           child: TextFormField(
             keyboardType: TextInputType.name,
-            validator: (value) {
-              if (value.isEmpty) {
+            validator: (user) {
+              if (user.isEmpty) {
                 return 'Campo usuario vacío';
               }
-              return null;
             },
             style: textFieldTextStyle,
             decoration: InputDecoration(
@@ -99,11 +101,15 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 5.0,
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            // Process data.
+              // Process data.
           }
-          //Test
-          Navigator.push(
+          if (user.text == 'admin') {
+            Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminScreen()));
+          } else {
+            Navigator.push(
               context, MaterialPageRoute(builder: (context) => UserScreen()));
+          }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
