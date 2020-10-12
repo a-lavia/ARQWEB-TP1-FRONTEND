@@ -6,6 +6,7 @@ import 'CheckIn.dart';
 import 'Informar.dart';
 import 'UserPotencialPositivoScreen.dart';
 import 'verLocacionScreen.dart';
+import 'CheckOutScreen.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -101,7 +102,7 @@ class _UserScreenState extends State<UserScreen> {
         elevation: 5.0,
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => VerLocationsScreen()));
+              MaterialPageRoute(builder: (context) => CheckOutScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
