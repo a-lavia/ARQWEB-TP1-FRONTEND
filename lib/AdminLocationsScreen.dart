@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
-import 'Informar.dart';
-import 'UserScreen.dart';
 
-class MapaScreen extends StatefulWidget {
+class AdminLocationsScreen extends StatefulWidget {
   @override
-  _MapaScreenState createState() => _MapaScreenState();
+  _AdminLocationsScreenState createState() => _AdminLocationsScreenState();
 }
 
-class _MapaScreenState extends State<MapaScreen> {
+class _AdminLocationsScreenState extends State<AdminLocationsScreen> {
 
    Widget _buildExitBtn() {
     return Container(

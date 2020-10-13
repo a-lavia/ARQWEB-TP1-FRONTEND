@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'CreateLocationScreen.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
-import 'CheckIn.dart';
-import 'Informar.dart';
+import 'CheckInScreen.dart';
+import 'HealthStatusScreen.dart';
 import 'UserPotencialPositivoScreen.dart';
-import 'verLocacionScreen.dart';
+import 'VerLocacionScreen.dart';
 import 'CheckOutScreen.dart';
 
 class UserScreen extends StatefulWidget {
@@ -63,7 +63,7 @@ class _UserScreenState extends State<UserScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CheckIn()));
+                                  builder: (context) => CheckInScreen()));
                         },
                       ),
                       FlatButton(
@@ -131,7 +131,7 @@ class _UserScreenState extends State<UserScreen> {
         elevation: 5.0,
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Informar()));
+              context, MaterialPageRoute(builder: (context) => HealthStatusScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

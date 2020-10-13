@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 import 'UserScreen.dart';
-import 'LocationClass.dart';
+import 'Location.dart';
 
 class VerLocationsScreen extends StatelessWidget {
   // This widget is the root of your application.
@@ -15,14 +15,14 @@ class VerLocationsScreen extends StatelessWidget {
       ),
       home: Scaffold(
           body: new ListView(
-              children: locaciones.map(_buildItem).toList(),
+              children: testLocations.map(_buildItem).toList(),
           )
       )
     );
   }
 }
 
-Widget _buildItem(Locacion locacion) {
+Widget _buildItem(Location locacion) {
   return new ListTile(
       title: new Text(locacion.name),
       subtitle: new Text('Capacidad Actual: ${locacion.capacidad}'' Infectados Actualmente: ${locacion.infectados}'),

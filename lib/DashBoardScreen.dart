@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
-import 'Informar.dart';
+import 'HealthStatusScreen.dart';
 import 'UserScreen.dart';
 
 class DashBoardScreen extends StatefulWidget {

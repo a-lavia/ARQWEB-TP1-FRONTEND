@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
-import 'mapaAdminScreen.dart';
-import 'dashBoardScreen.dart';
+import 'AdminLocationsScreen.dart';
+import 'DashBoardScreen.dart';
 
 class AdminScreen extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _AdminScreenState extends State<AdminScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MapaScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AdminLocationsScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

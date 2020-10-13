@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 
-class Informar extends StatefulWidget {
+class HealthStatusScreen extends StatefulWidget {
   @override
-  _InformarState createState() => _InformarState();
+  _HealthStatusScreenState createState() => _HealthStatusScreenState();
 }
 
-class _InformarState extends State<Informar> {
+class _HealthStatusScreenState extends State<HealthStatusScreen> {
   final _formKey = GlobalKey<FormState>();
   DateTime _dateTime;
 

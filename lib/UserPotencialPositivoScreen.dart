@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
-import 'Informar.dart';
+import 'HealthStatusScreen.dart';
 import 'UserScreen.dart';
 
 class UserPotencialContagioScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _UserPotencialContagioScreenState extends State<UserPotencialContagioScree
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Informar()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HealthStatusScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

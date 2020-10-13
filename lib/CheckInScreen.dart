@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 
-class CheckIn extends StatefulWidget {
+class CheckInScreen extends StatefulWidget {
   @override
-  _CheckInState createState() => _CheckInState();
+  _CheckInScreenState createState() => _CheckInScreenState();
 }
 
-class _CheckInState extends State<CheckIn> {
+class _CheckInScreenState extends State<CheckInScreen> {
   final _formKey = GlobalKey<FormState>();
 
   
