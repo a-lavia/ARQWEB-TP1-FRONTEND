@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'LocationScreen.dart';
+import 'CreateLocationScreen.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 import 'CheckIn.dart';
@@ -22,7 +22,7 @@ class _UserScreenState extends State<UserScreen> {
         elevation: 5.0,
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LocationScreen()));
+              MaterialPageRoute(builder: (context) => CreateLocationScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

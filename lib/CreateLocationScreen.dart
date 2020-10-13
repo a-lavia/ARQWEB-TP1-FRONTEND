@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:yoestuveahi/MapWidget.dart';
 import 'BackgroundFrame.dart';
 import 'LocationQRScreen.dart';
+import 'PickLocationScreen.dart';
 import 'StyleUtils.dart';
 
-class LocationScreen extends StatefulWidget {
+class CreateLocationScreen extends StatefulWidget {
   @override
-  _LocationScreenState createState() => _LocationScreenState();
+  _CreateLocationScreenState createState() => _CreateLocationScreenState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class _CreateLocationScreenState extends State<CreateLocationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   Widget _buildNameTextField() {
@@ -122,6 +124,37 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 
+  Widget _buildPickLocationBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(                  builder: (context) =>
+                      PickLocationScreen()));
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.white,
+        child: Text(
+          'ELEGIR UBICACIÓN',
+          style: TextStyle(
+            color: Color(0xFF527DAA),
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBackBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -164,6 +197,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     _buildNameTextField(),
                     SizedBox(height: 30.0),
                     _buildCapacityTextField(),
+                    _buildPickLocationBtn(),
                     _buildCreateBtn(),
                     _buildBackBtn(),
                   ],

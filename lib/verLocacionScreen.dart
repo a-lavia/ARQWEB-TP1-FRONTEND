@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'LocationScreen.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 import 'UserScreen.dart';
