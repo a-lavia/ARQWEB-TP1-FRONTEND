@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:swagger/api.dart';
+import 'Client.dart';
 import 'CreateLocationScreen.dart';
 import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
@@ -14,6 +16,15 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
+  /// Datos de usuario
+  Future<User> _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = Client.getInstance().userApi.getUser();
+  }
+
   Widget _buildRegisterLocationBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -130,8 +141,8 @@ class _UserScreenState extends State<UserScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HealthStatusScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HealthStatusScreen()));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -208,21 +219,36 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
+  Widget _buildMenu(User user) {
+    List<Widget> widgets = <Widget>[];
+    widgets.add(Text('Bienvenido ${user.email}', style: subtitleTextStyle));
+    widgets.add(_buildRegisterLocationBtn());
+    if (!user.isCheckedIn) {
+      widgets.add(_buildCheckInBtn());
+    } else {
+      widgets.add(_buildCheckOutBtn());
+    }
+    widgets.add(_buildInformBtn());
+    widgets.add(_buildVerLocacionBtn());
+    widgets.add(_buildExitBtn());
+    return ListView(
+      children: <Widget>[Column(     mainAxisAlignment: MainAxisAlignment.center,children: widgets)]
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BackgroundFrame(
-            child: ListView(
-      //mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text('Bienvenido @usuario', style: subtitleTextStyle),
-        _buildRegisterLocationBtn(),
-        _buildCheckInBtn(),
-        _buildCheckOutBtn(),
-        _buildInformBtn(),
-        _buildVerLocacionBtn(),
-        _buildExitBtn()
-      ],
-    )));
+            child: FutureBuilder<User>(
+                future: _user,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _buildMenu(snapshot.data);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}', style: subtitleTextStyle);
+                  }
+                  return CircularProgressIndicator();
+                })));
   }
 }
