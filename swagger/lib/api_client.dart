@@ -15,14 +15,19 @@ class ApiClient {
   Map<String, String> _defaultHeaderMap = {};
   Map<String, Authentication> _authentications = {};
 
+  HttpBasicAuth _httpBasicAuth;
+
   final _RegList = new RegExp(r'^List<(.*)>$');
   final _RegMap = new RegExp(r'^Map<String,(.*)>$');
 
-  ApiClient({this.basePath: "http://localhost:3000", username: "", password: ""}) {
-    var httpBasicAuth = new HttpBasicAuth();
-    httpBasicAuth.username = username;
-    httpBasicAuth.password = password;
-    _authentications['basicAuth'] = httpBasicAuth;
+  ApiClient({this.basePath: "http://localhost:3000"}) {
+    _httpBasicAuth = new HttpBasicAuth();
+    _authentications['basicAuth'] = _httpBasicAuth;
+  }
+
+  void setAuthorization(String username, String password) {
+    _httpBasicAuth.username = username;
+    _httpBasicAuth.password = password;
   }
 
   void addDefaultHeader(String key, String value) {
