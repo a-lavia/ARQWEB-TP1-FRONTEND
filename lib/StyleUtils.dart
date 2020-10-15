@@ -41,3 +41,127 @@ final textFieldTextStyle = TextStyle(
   color: Colors.white,
   fontFamily: 'OpenSans',
 );
+
+class BackgroundFrame extends StatelessWidget {
+  BackgroundFrame({Key key, this.child})
+      : assert(child != null),
+        super(key: key);
+  final _scrollController = ScrollController();
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF73AEF5),
+                Color(0xFF61A4F1),
+                Color(0xFF478DE0),
+                Color(0xFF398AE5),
+              ],
+              stops: [0.1, 0.4, 0.7, 0.9],
+            ),
+          ),
+        ),
+        Container(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 40.0,
+                vertical: 20.0,
+              ),
+              child: Text('#YoEstuveAhí', style: titleTextStyle),
+            )),
+        Container(
+            height: double.infinity,
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                  vertical: 120.0,
+                ),
+                child: Scrollbar(
+                    controller: _scrollController,
+                    isAlwaysShown: true,
+                    child: SingleChildScrollView(
+                        controller: _scrollController, child: child))))
+      ],
+    );
+  }
+}
+
+Widget textField({name='Text Field', hint = 'Hint...', keyboardType = TextInputType.text, obscureText = false, controller, validator, icon = Icons.add}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text(
+        name,
+        style: textFieldLabelStyle,
+      ),
+      SizedBox(height: 10.0),
+      Container(
+        alignment: Alignment.centerLeft,
+        decoration: textFieldBoxDecorationStyle,
+        height: 60.0,
+        child: TextFormField(
+          obscureText: obscureText,
+          controller: controller,
+          keyboardType: keyboardType,
+          validator: validator,
+          style: textFieldTextStyle,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(
+              icon,
+              color: Colors.white,
+            ),
+            hintText: hint,
+            hintStyle: textFieldHintTextStyle,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget button({text='BUTTON', onPressed}) {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 25.0),
+    width: double.infinity,
+    child: RaisedButton(
+      elevation: 5.0,
+      onPressed: onPressed,
+      padding: EdgeInsets.all(15.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      color: Colors.white,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Color(0xFF527DAA),
+          letterSpacing: 1.5,
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'OpenSans',
+        ),
+      ),
+    ),
+  );
+}
+
+Widget backButton(BuildContext context) {
+  return button(
+    text: 'VOLVER',
+    onPressed: () {
+      Navigator.pop(context);
+    }
+  );
+}

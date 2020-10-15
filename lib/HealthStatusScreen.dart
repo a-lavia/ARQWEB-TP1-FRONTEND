@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 
 class HealthStatusScreen extends StatefulWidget {

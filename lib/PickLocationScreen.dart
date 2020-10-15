@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yoestuveahi/MapWidget.dart';
-import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 
 class PickLocationScreen extends StatefulWidget {

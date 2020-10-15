@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yoestuveahi/MapWidget.dart';
-import 'BackgroundFrame.dart';
 import 'LocationQRScreen.dart';
 import 'PickLocationScreen.dart';
 import 'StyleUtils.dart';

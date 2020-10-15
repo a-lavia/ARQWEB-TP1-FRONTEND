@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
 import 'Client.dart';
 import 'CreateLocationScreen.dart';
-import 'BackgroundFrame.dart';
 import 'StyleUtils.dart';
 import 'CheckInScreen.dart';
 import 'HealthStatusScreen.dart';
