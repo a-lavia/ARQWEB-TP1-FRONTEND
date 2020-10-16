@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:swagger/api.dart';
+import 'package:yoestuveahi/Client.dart';
 import 'StyleUtils.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterUserScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _RegisterUserScreenState createState() => _RegisterUserScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _userTextController = new TextEditingController();
+  final TextEditingController _emailTextController = new TextEditingController();
+  final TextEditingController _passwordTextController = new TextEditingController();
 
   Widget _buildUserTextField() {
     return textField(
@@ -16,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         hint: 'Ingresa tu usuario',
         keyboardType: TextInputType.name,
         icon: Icons.account_circle,
+        controller: _userTextController,
         validator: (value) {
           if (value.isEmpty) {
             return 'Campo usuario vacío';
@@ -30,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         hint: 'Ingresa tu email',
         keyboardType: TextInputType.emailAddress,
         icon: Icons.email,
+        controller: _emailTextController,
         validator: (value) {
           if (value.isEmpty) {
             return 'Campo email vacío';
@@ -44,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         hint: 'Ingresa tu contraseña',
         obscureText: true,
         icon: Icons.lock,
+        controller: _passwordTextController,
         validator: (value) {
           if (value.isEmpty) {
             return 'Campo contraseña vacío';
@@ -57,7 +65,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         text: 'REGISTRAR',
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            // Process data.
+            NewUser newUser = NewUser();
+            newUser.email = _emailTextController.text;
+            try {
+              Client.getInstance().userApi.createUser(newUser);
+            } catch (e) {
+              //TODO: Mostrar algún mensaje de error en pantalla
+              print("Error: $e\n");
+            }
           }
         });
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'Client.dart';
-import 'RegisterScreen.dart';
+import 'RegisterUserScreen.dart';
 import 'StyleUtils.dart';
 import 'UserScreen.dart';
 
@@ -12,18 +12,19 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _userTextController = new TextEditingController();
+  final TextEditingController _emailTextController = new TextEditingController();
+  final TextEditingController _passwordTextController = new TextEditingController();
 
-  Widget _buildUserTextField() {
+  Widget _buildEmailTextField() {
     return textField(
-        name: 'Usuario',
-        hint: 'Ingresa tu usuario',
+        name: 'Email',
+        hint: 'Ingresa tu email',
         keyboardType: TextInputType.emailAddress,
-        icon: Icons.account_circle,
-        controller: _userTextController,
+        icon: Icons.email,
+        controller: _emailTextController,
         validator: (value) {
           if (value.isEmpty) {
-            return 'Campo usuario vacío';
+            return 'Campo email vacío';
           }
           return null;
         });
@@ -35,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
         hint: 'Ingresa tu contraseña',
         icon: Icons.lock,
         obscureText: true,
+        controller: _passwordTextController,
         validator: (value) {
           if (value.isEmpty) {
             return 'Campo password vacío';
@@ -48,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
       text:'INGRESA',
       onPressed: () {
         if (_formKey.currentState.validate()) {
-          Client.getInstance().setAuthorization(_userTextController.text, "");
+          Client.getInstance().setAuthorization(_emailTextController.text, "");
           Navigator.push(context, MaterialPageRoute(builder: (context) => UserScreen()));
         }
       }
@@ -59,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+            context, MaterialPageRoute(builder: (context) => RegisterUserScreen()));
       },
       child: RichText(
         text: TextSpan(
@@ -97,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     Text('Login', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
-                    _buildUserTextField(),
+                    _buildEmailTextField(),
                     SizedBox(height: 30.0),
                     _buildPasswordTextField(),
                     _buildLoginBtn(),

@@ -157,9 +157,9 @@ Widget button({text='BUTTON', onPressed}) {
   );
 }
 
-Widget backButton(BuildContext context) {
+Widget backButton(BuildContext context, {text='VOLVER'}) {
   return button(
-    text: 'VOLVER',
+    text: text,
     onPressed: () {
       Navigator.pop(context);
     }

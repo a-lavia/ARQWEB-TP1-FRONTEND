@@ -67,7 +67,8 @@ class _LocationQrScreenState extends State<LocationQrScreen> {
         body: BackgroundFrame(
             child: Form(
                 key: _formKey,
-                child: ListView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('QR para Locacion', style: subtitleTextStyle),
                     SizedBox(height: 30.0),
