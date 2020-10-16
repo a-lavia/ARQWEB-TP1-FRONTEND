@@ -165,3 +165,27 @@ Widget backButton(BuildContext context, {text='VOLVER'}) {
     }
   );
 }
+
+void showAlertDialog(BuildContext context, {msg = '', title = 'Alerta!', accept = 'Aceptar'}) {
+  Widget acceptButton = FlatButton(
+    child: Text(accept),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Text(title),
+    content: Text(msg),
+    actions: [
+      acceptButton
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
