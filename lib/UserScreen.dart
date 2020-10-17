@@ -8,19 +8,14 @@ import 'HealthStatusScreen.dart';
 import 'CheckOutScreen.dart';
 
 class UserScreen extends StatefulWidget {
+  final User user;
+
+  UserScreen({Key key, @required this.user}) : super(key: key);
   @override
   _UserScreenState createState() => _UserScreenState();
 }
 
 class _UserScreenState extends State<UserScreen> {
-  /// Datos de usuario
-  Future<User> _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _user = Client.getInstance().userApi.getUser();
-  }
 
   Widget _buildRegisterLocationBtn() {
     return button(
@@ -89,16 +84,9 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BackgroundFrame(
-            child: FutureBuilder<User>(
-                future: _user,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return _buildMenu(snapshot.data);
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}', style: subtitleTextStyle);
-                  }
-                  return CircularProgressIndicator();
-                })));
+      body: BackgroundFrame(
+          child: _buildMenu(widget.user)
+      )
+    );
   }
 }

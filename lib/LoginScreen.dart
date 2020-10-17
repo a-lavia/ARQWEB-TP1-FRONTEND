@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:swagger/api.dart';
 import 'Client.dart';
+import 'ErrorScreen.dart';
 import 'RegisterUserScreen.dart';
 import 'StyleUtils.dart';
 import 'UserScreen.dart';
@@ -48,10 +50,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginBtn() {
     return button(
       text:'INGRESA',
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState.validate()) {
           Client.getInstance().setAuthorization(_emailTextController.text, "");
-          Navigator.push(context, MaterialPageRoute(builder: (context) => UserScreen()));
+          try {
+            User user = await Client.getInstance().userApi.getUser();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UserScreen(user: user)));
+          } catch (e) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+            print("Error: $e\n");
+          }
         }
       }
     );
