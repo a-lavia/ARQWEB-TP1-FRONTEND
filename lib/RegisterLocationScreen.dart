@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:swagger/api.dart';
+import 'package:yoestuveahi/ErrorScreen.dart';
 import 'Client.dart';
 import 'LocationQRScreen.dart';
 import 'PickLocationScreen.dart';
@@ -14,8 +16,11 @@ class RegisterLocationScreen extends StatefulWidget {
 class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameTextController = TextEditingController();
+  final TextEditingController _addressTextController = TextEditingController();
   final TextEditingController _capacityTextController = TextEditingController();
+  final TextEditingController _descriptionTextController = TextEditingController();
   LatLng _position;
+
 
   Widget _buildNameTextField() {
     return textField(
@@ -31,16 +36,46 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
         });
   }
 
+  Widget _buildAddressTextField() {
+    return textField(
+        name: 'Dirección',
+        hint: 'Ingresa una dirección',
+        icon: Icons.apartment,
+        controller: _addressTextController,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Campo dirección vacío';
+          }
+          return null;
+        });
+  }
+
   Widget _buildCapacityTextField() {
     return textField(
         name: 'Capacidad',
         hint: 'Ingresa la capacidad',
         keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         icon: Icons.home,
         controller: _capacityTextController,
         validator: (value) {
           if (value.isEmpty) {
             return 'Campo capacidad vacío';
+          }
+          return null;
+        });
+  }
+
+
+  Widget _buildDescriptionTextField() {
+    return textField(
+        name: 'Descripción',
+        hint: 'Ingresa una descripción',
+        icon: Icons.description,
+        controller: _descriptionTextController,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Campo descripción vacío';
           }
           return null;
         });
@@ -55,30 +90,40 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
         });
   }
 
+  Widget _buildUploadImageBtn() {
+    return button(
+        text: 'SUBIR IMAGEN',
+        //TODO: Subir imagen
+        onPressed: () async {
+        });
+  }
+
   Widget _buildCreateBtn() {
     return button(
         text: 'CREAR',
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
             if (_position == null) {
               showAlertDialog(context, msg: 'Elija una ubicación por favor.');
             } else {
-              //TODO: Completar todos los campos
               NewLocation newLocation = NewLocation();
               newLocation.name = _nameTextController.text;
+              newLocation.address = _addressTextController.text;
+              newLocation.description = _descriptionTextController.text;
+              //newLocation.images = _nameTextController.text;//TODO: Subir imagen
               newLocation.maxCapacity = double.parse(_capacityTextController.text);
               newLocation.latitude = _position.latitude.toString();
               newLocation.longitude = _position.longitude.toString();
-
+              print(newLocation);
               try {
-                Client.getInstance().locationApi.locationPost(newLocation);
+                Location location = await Client.getInstance().locationApi.locationPost(newLocation);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQrScreen(locationId: location.id)));
+                print(location);//FIXME: DEBUG
               } catch (e) {
-                //TODO: Mostrar algún mensaje de error en pantalla
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
                 print("Error: $e\n");
               }
 
-              //Navigator.push(context,
-                  //MaterialPageRoute(builder: (context) => LocationQrScreen()));
             }
           }
         });
@@ -101,8 +146,14 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
                     SizedBox(height: 30.0),
                     _buildNameTextField(),
                     SizedBox(height: 30.0),
+                    _buildAddressTextField(),
+                    SizedBox(height: 30.0),
                     _buildCapacityTextField(),
+                    SizedBox(height: 30.0),
+                    _buildDescriptionTextField(),
+                    SizedBox(height: 30.0),
                     _buildPickLocationBtn(),
+                    _buildUploadImageBtn(),
                     _buildCreateBtn(),
                     _buildBackBtn(),
                   ],

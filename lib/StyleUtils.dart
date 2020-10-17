@@ -96,7 +96,7 @@ class BackgroundFrame extends StatelessWidget {
   }
 }
 
-Widget textField({name='Text Field', hint = 'Hint...', keyboardType = TextInputType.text, obscureText = false, controller, validator, icon = Icons.add}) {
+Widget textField({name='Text Field', hint = 'Hint...', keyboardType = TextInputType.text, obscureText = false, controller, validator, icon = Icons.add, inputFormatters}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -113,6 +113,7 @@ Widget textField({name='Text Field', hint = 'Hint...', keyboardType = TextInputT
           obscureText: obscureText,
           controller: controller,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
           validator: validator,
           style: textFieldTextStyle,
           decoration: InputDecoration(
