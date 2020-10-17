@@ -164,12 +164,30 @@ class LocationApi {
   ///
   /// Da de alta una locacion
   Future locationPost(NewLocation body) async {
-    Object postBody = body;
+    Object postBody = null;
 
     // verify required params are set
-    if(body == null) {
-     throw new ApiException(400, "Missing required param: body");
+    if(body.name == null) {
+     throw new ApiException(400, "Missing required param: name");
     }
+    if(body.description == null) {
+     throw new ApiException(400, "Missing required param: description");
+    }
+    if(body.maxCapacity == null) {
+     throw new ApiException(400, "Missing required param: maxCapacity");
+    }
+    if(body.address == null) {
+     throw new ApiException(400, "Missing required param: address");
+    }
+    if(body.latitude == null) {
+     throw new ApiException(400, "Missing required param: latitude");
+    }
+    if(body.longitude == null) {
+     throw new ApiException(400, "Missing required param: longitude");
+    }
+    /*if(body.images == null) {
+     throw new ApiException(400, "Missing required param: images");
+    }*/
 
     // create path and map variables
     String path = "/location".replaceAll("{format}","json");
@@ -179,7 +197,7 @@ class LocationApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
-    List<String> contentTypes = ["application/form-data"];
+    List<String> contentTypes = ["multipart/form-data"];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
     List<String> authNames = ["basicAuth"];
@@ -187,11 +205,54 @@ class LocationApi {
     if(contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
       MultipartRequest mp = new MultipartRequest(null, null);
+      if (body.name != null) {
+        hasFields = true;
+        mp.fields['name'] = parameterToString(body.name);
+      }
+      if (body.description != null) {
+        hasFields = true;
+        mp.fields['description'] = parameterToString(body.description);
+      }
+      if (body.maxCapacity != null) {
+        hasFields = true;
+        mp.fields['maxCapacity'] = parameterToString(body.maxCapacity);
+      }
+      if (body.address != null) {
+        hasFields = true;
+        mp.fields['address'] = parameterToString(body.address);
+      }
+      if (body.latitude != null) {
+        hasFields = true;
+        mp.fields['latitude'] = parameterToString(body.latitude);
+      }
+      if (body.longitude != null) {
+        hasFields = true;
+        mp.fields['longitude'] = parameterToString(body.longitude);
+      }
+      if (body.images != null) {
+        hasFields = true;
+        //TODO: FIX THIS
+        //mp.fields['images'] = images.field;
+        //mp.files.add(images);
+      }
       if(hasFields)
         postBody = mp;
     }
     else {
-          }
+      if (body.name != null)
+        formParams['name'] = parameterToString(body.name);
+if (body.description != null)
+        formParams['description'] = parameterToString(body.description);
+if (body.maxCapacity != null)
+        formParams['maxCapacity'] = parameterToString(body.maxCapacity);
+if (body.address != null)
+        formParams['address'] = parameterToString(body.address);
+if (body.latitude != null)
+        formParams['latitude'] = parameterToString(body.latitude);
+if (body.longitude != null)
+        formParams['longitude'] = parameterToString(body.longitude);
+
+    }
 
     var response = await apiClient.invokeAPI(path,
                                              'POST',
@@ -206,9 +267,9 @@ class LocationApi {
       throw new ApiException(response.statusCode, response.body);
     } else if(response.body != null) {
       return
-          ;
+          apiClient.deserialize(response.body, 'Location') as Location ;
     } else {
-      return ;
+      return null;
     }
   }
 }

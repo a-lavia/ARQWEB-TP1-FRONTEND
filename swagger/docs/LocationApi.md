@@ -144,7 +144,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **locationPost**
-> locationPost(body)
+> Location locationPost(name, description, maxCapacity, address, latitude, longitude, images)
 
 Crea una locacion
 
@@ -158,10 +158,17 @@ import 'package:swagger/api.dart';
 //swagger.api.Configuration.password = 'YOUR_PASSWORD';
 
 var api_instance = new LocationApi();
-var body = new NewLocation(); // NewLocation | 
+var name = name_example; // String | 
+var description = description_example; // String | 
+var maxCapacity = 1.2; // double | 
+var address = address_example; // String | 
+var latitude = latitude_example; // String | 
+var longitude = longitude_example; // String | 
+var images = images_example; // String | 
 
 try {
-    api_instance.locationPost(body);
+    var result = api_instance.locationPost(name, description, maxCapacity, address, latitude, longitude, images);
+    print(result);
 } catch (e) {
     print("Exception when calling LocationApi->locationPost: $e\n");
 }
@@ -171,11 +178,17 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**NewLocation**](NewLocation.md)|  | 
+ **name** | **String**|  | 
+ **description** | **String**|  | 
+ **maxCapacity** | **double**|  | 
+ **address** | **String**|  | 
+ **latitude** | **String**|  | 
+ **longitude** | **String**|  | 
+ **images** | **String****String**|  | 
 
 ### Return type
 
-void (empty response body)
+[**Location**](Location.md)
 
 ### Authorization
 
@@ -183,8 +196,8 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/form-data
- - **Accept**: Not defined
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

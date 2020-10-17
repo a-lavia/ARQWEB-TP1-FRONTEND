@@ -32,7 +32,7 @@ void main() {
     //
     // Da de alta una locacion
     //
-    //Future locationPost(NewLocation body) async
+    //Future<Location> locationPost(String name, String description, double maxCapacity, String address, String latitude, String longitude, String images) async
     test('test locationPost', () async {
       // TODO
     });
