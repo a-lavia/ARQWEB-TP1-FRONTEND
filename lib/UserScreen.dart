@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
 import 'Client.dart';
+import 'ErrorScreen.dart';
 import 'RegisterLocationScreen.dart';
 import 'StyleUtils.dart';
 import 'CheckInScreen.dart';
@@ -17,41 +18,70 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
 
-  Widget _buildRegisterLocationBtn() {
-    return button(
-        text: 'CREAR LOCACIÓN',
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => RegisterLocationScreen()));
-        });
+  void _checkInOnPressed() {
+    if (widget.user.possiblyInfected) {
+      showAlertDialogOptions(context,
+          msg: 'Usted podría estar infectado, ¿seguro que desea continuar?',
+          acceptAction: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CheckInScreen()));
+          }
+      );
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CheckInScreen()));
+    }
   }
 
   Widget _buildCheckInBtn() {
     return button(
         text: 'CHECK IN',
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CheckInScreen()));
-        });
+        onPressed: widget.user.isInfected ? null : _checkInOnPressed
+    );
   }
 
   Widget _buildCheckOutBtn() {
     return button(
       text: 'CHECK OUT',
       onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CheckOutScreen()));
+        try {
+          Client.getInstance().checkApi.userCheckoutPost();
+        } catch (e) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+          print("Error: $e\n");
+        }
       },
     );
   }
 
-  Widget _buildInformBtn() {
+  void _showCalendar() {
+    showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2001),
+        lastDate: DateTime(2021)
+    );
+  }
+
+  Widget _buildReportPositiveBtn() {
     return button(
-        text: 'INFORMAR',
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HealthStatusScreen()));
-        });
+        text: 'REPORTAR TEST POSITIVO',
+        onPressed: _showCalendar
+    );
+  }
+
+  Widget _buildReportCuredBtn() {
+    return button(
+        text: 'REPORTAR ALTA MÉDICA',
+        onPressed: _showCalendar
+    );
+  }
+
+  Widget _buildReportNegativeBtn() {
+    return button(
+        text: 'REPORTAR TEST NEGATIVO',
+        onPressed: _showCalendar//TODO: Importa la fecha?
+    );
   }
 
   //TODO: COMPLETAR...
@@ -61,32 +91,69 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
+  Widget _buildRegisterLocationBtn() {
+    return button(
+        text: 'CREAR LOCACIÓN',
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => RegisterLocationScreen()));
+        });
+  }
+
   Widget _buildExitBtn() {
     return backButton(context, text: 'SALIR');
   }
 
-  Widget _buildMenu(User user) {
+  Widget _buildMenu() {
     List<Widget> widgets = <Widget>[];
-    widgets.add(Text('Bienvenido ${user.email}', style: subtitleTextStyle));
-    widgets.add(_buildRegisterLocationBtn());
-    if (!user.isCheckedIn) {
+    widgets.add(Text('Bienvenido ${widget.user.email}', style: subtitleTextStyle));
+    if (!widget.user.isCheckedIn) {
       widgets.add(_buildCheckInBtn());
     } else {
       widgets.add(_buildCheckOutBtn());
     }
-    widgets.add(_buildInformBtn());
+    if (widget.user.isInfected) {
+      widgets.add(_buildReportCuredBtn());
+    } else {
+      widgets.add(_buildReportPositiveBtn());
+        if (widget.user.possiblyInfected) {
+          widgets.add(_buildReportNegativeBtn());
+        }
+    }
     widgets.add(_buildVerLocacionBtn());
+    widgets.add(_buildRegisterLocationBtn());
     widgets.add(_buildExitBtn());
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center, children: widgets);
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: widgets);
+  }
+
+  Widget _buildHealthStatusBtn() {
+    if (widget.user.isInfected) {
+      return FloatingActionButton.extended(
+        label: Text('¡ESTÁS INFECTADO! INFORMA TU ESTADO DE SALUD'),
+        icon: Icon(Icons.add_box),
+        backgroundColor: Colors.pink,
+      );
+    } else if (widget.user.possiblyInfected) {
+      return FloatingActionButton.extended(
+        label: Text('¡TENÉS RIESGO DE CONTAGIO! INFORMA TU ESTADO DE SALUD.'),
+        icon: Icon(Icons.add_box),
+        backgroundColor: Colors.pink,
+      );
+    } else {
+      return Container();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    //DEBUG
+    widget.user.possiblyInfected = true;
+    widget.user.isInfected = false;
     return Scaffold(
       body: BackgroundFrame(
-          child: _buildMenu(widget.user)
-      )
+          child: _buildMenu(),
+      ),
+      floatingActionButton: _buildHealthStatusBtn()
     );
   }
 }

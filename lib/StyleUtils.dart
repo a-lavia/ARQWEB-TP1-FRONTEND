@@ -167,6 +167,40 @@ Widget backButton(BuildContext context, {text='VOLVER'}) {
   );
 }
 
+void showAlertDialogOptions(BuildContext context, {msg = '', title = 'Alerta!', accept = 'Continuar', @required acceptAction, cancel = 'Cancelar'}) {
+  Widget acceptButton = FlatButton(
+    child: Text(accept),
+    onPressed: () {
+      Navigator.of(context).pop();
+      acceptAction();
+    }
+  );
+
+  Widget cancelButton = FlatButton(
+    child: Text(cancel),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Text(title),
+    content: Text(msg),
+    actions: [
+      cancelButton,
+      acceptButton
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+
 void showAlertDialog(BuildContext context, {msg = '', title = 'Alerta!', accept = 'Aceptar'}) {
   Widget acceptButton = FlatButton(
     child: Text(accept),
