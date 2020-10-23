@@ -117,6 +117,7 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
               print(newLocation);
               try {
                 Location location = await Client.getInstance().locationApi.locationPost(newLocation);
+                Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQrScreen(locationId: location.id)));
                 print(location);//FIXME: DEBUG
               } catch (e) {
