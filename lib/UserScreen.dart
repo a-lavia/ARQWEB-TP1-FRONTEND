@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
+import 'package:yoestuveahi/QRScannerScreen.dart';
 import 'Client.dart';
 import 'ErrorScreen.dart';
 import 'RegisterLocationScreen.dart';
 import 'StyleUtils.dart';
-import 'CheckInScreen.dart';
-import 'HealthStatusScreen.dart';
-import 'CheckOutScreen.dart';
 
 class UserScreen extends StatefulWidget {
   final User user;
@@ -18,18 +16,48 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
 
+  void _refresh() async {
+    User user;
+    try {
+      user = await Client.getInstance().userApi.getUser();
+    } catch (e) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+      print("Error: $e\n");
+    }
+    setState(() {
+        widget.user.isCheckedIn = user.isCheckedIn;
+        widget.user.possiblyInfected = user.possiblyInfected;
+        widget.user.isInfected = user.isInfected;
+    });
+  }
+
+  void _doCheckIn() async {
+    String locationId = await Navigator.push(context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
+    if (locationId != null) {
+      try {
+        await Client
+            .getInstance()
+            .checkApi
+            .userCheckinLocationIdPost(locationId);
+        _refresh();
+      } catch (e) {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ErrorScreen(apiException: e)));
+        print("Error: $e\n");
+      }
+    }
+  }
+
   void _checkInOnPressed() {
     if (widget.user.possiblyInfected) {
       showAlertDialogOptions(context,
           msg: 'Usted podría estar infectado, ¿seguro que desea continuar?',
           acceptAction: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CheckInScreen()));
+            _doCheckIn();
           }
       );
     } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => CheckInScreen()));
+      _doCheckIn();
     }
   }
 
@@ -40,17 +68,22 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
+  void _doCheckout() async {
+    try {
+      await Client.getInstance().checkApi.userCheckoutPost();
+      _refresh();
+    } catch (e) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+      print("Error: $e\n");
+    }
+  }
+
   Widget _buildCheckOutBtn() {
     return button(
       text: 'CHECK OUT',
       onPressed: () {
-        try {
-          Client.getInstance().checkApi.userCheckoutPost();
-        } catch (e) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
-          print("Error: $e\n");
-        }
-      },
+        _doCheckout();
+      }
     );
   }
 
