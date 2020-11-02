@@ -14,8 +14,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailTextController = new TextEditingController();
-  final TextEditingController _passwordTextController = new TextEditingController();
+  final TextEditingController _emailTextController =
+      new TextEditingController();
+  final TextEditingController _passwordTextController =
+      new TextEditingController();
 
   Widget _buildEmailTextField() {
     return textField(
@@ -49,27 +51,33 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildLoginBtn() {
     return button(
-      text:'INGRESA',
-      onPressed: () async {
-        if (_formKey.currentState.validate()) {
-          Client.getInstance().setAuthorization(_emailTextController.text, "");
-          try {
-            User user = await Client.getInstance().userApi.getUser();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => UserScreen(user: user)));
-          } catch (e) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
-            print("Error: $e\n");
+        text: 'INGRESA',
+        onPressed: () async {
+          if (_formKey.currentState.validate()) {
+            Client.getInstance()
+                .setAuthorization(_emailTextController.text, "");
+            try {
+              User user = await Client.getInstance().userApi.getUser();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserScreen(user: user)));
+            } catch (e) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ErrorScreen(apiException: e)));
+              print("Error: $e\n");
+            }
           }
-        }
-      }
-    );
+        });
   }
 
   Widget _buildRegisterBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RegisterUserScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => RegisterUserScreen()));
       },
       child: RichText(
         text: TextSpan(
