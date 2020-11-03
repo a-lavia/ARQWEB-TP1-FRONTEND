@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
+import 'package:yoestuveahi/LocationInfoScreen.dart';
 import 'package:yoestuveahi/QRScannerScreen.dart';
 import 'Client.dart';
 import 'ErrorScreen.dart';
@@ -117,10 +118,26 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  //TODO: COMPLETAR...
-  Widget _buildVerLocacionBtn() {
+  void _locationInfoOnPressed() async {
+    String locationId = await Navigator.push(context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
+    if (locationId != null) {
+      try {
+        Location location = await Client.getInstance().locationApi.locationLocationIdGet(locationId);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LocationInfoScreen(location: location)));
+      } catch (e) {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ErrorScreen(apiException: e)));
+        print("Error: $e\n");
+      }
+    }
+  }
+
+  Widget _buildLocationInfoBtn() {
     return button(
       text: 'VER LOCACIÓN',
+      onPressed: () {
+        _locationInfoOnPressed();
+      }
     );
   }
 
@@ -153,7 +170,7 @@ class _UserScreenState extends State<UserScreen> {
           widgets.add(_buildReportNegativeBtn());
         }
     }
-    widgets.add(_buildVerLocacionBtn());
+    widgets.add(_buildLocationInfoBtn());
     widgets.add(_buildRegisterLocationBtn());
     widgets.add(_buildExitBtn());
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: widgets);
