@@ -55,7 +55,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       _webcamVideoElement.play();
     });
 
-    Timer.periodic(Duration(seconds: 4), _readQR);
+    Timer.periodic(Duration(seconds: 1), _readQR);
   }
 
   @override
