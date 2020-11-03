@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swagger/api.dart';
 import 'package:yoestuveahi/Client.dart';
+import 'ErrorScreen.dart';
 import 'StyleUtils.dart';
 
 class RegisterUserScreen extends StatefulWidget {
@@ -63,14 +64,14 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   Widget _buildRegisterBtn() {
     return button(
         text: 'REGISTRAR',
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
             NewUser newUser = NewUser();
             newUser.email = _emailTextController.text;
             try {
-              Client.getInstance().userApi.createUser(newUser);
+              await Client.getInstance().userApi.createUser(newUser);
             } catch (e) {
-              //TODO: Mostrar algún mensaje de error en pantalla
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
               print("Error: $e\n");
             }
           }
