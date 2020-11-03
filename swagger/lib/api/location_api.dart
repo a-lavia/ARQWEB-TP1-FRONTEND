@@ -10,7 +10,7 @@ class LocationApi {
   /// Devuelve un listado de las locaciones del usuario / del sistema si el usuario es el admin
   ///
   /// 
-  Future<LocationList> locationGet() async {
+  Future<List<Location>> locationGet() async {
     Object postBody = null;
 
     // verify required params are set
@@ -50,7 +50,7 @@ class LocationApi {
       throw new ApiException(response.statusCode, response.body);
     } else if(response.body != null) {
       return
-          apiClient.deserialize(response.body, 'LocationList') as LocationList ;
+          apiClient.deserialize(response.body, 'LocationList') as List<Location> ;
     } else {
       return null;
     }
@@ -58,7 +58,7 @@ class LocationApi {
   /// Devuelve una locacion en su estado actual
   ///
   /// 
-  Future<LocationList> locationLocationIdGet(String locationId) async {
+  Future<Location> locationLocationIdGet(String locationId) async {
     Object postBody = null;
 
     // verify required params are set
@@ -101,7 +101,7 @@ class LocationApi {
       throw new ApiException(response.statusCode, response.body);
     } else if(response.body != null) {
       return
-          apiClient.deserialize(response.body, 'LocationList') as LocationList ;
+          apiClient.deserialize(response.body, 'Location') as Location;
     } else {
       return null;
     }

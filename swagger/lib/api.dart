@@ -20,7 +20,6 @@ part 'api/location_api.dart';
 part 'api/user_api.dart';
 part 'model/history.dart';
 part 'model/location.dart';
-part 'model/location_list.dart';
 part 'model/new_location.dart';
 part 'model/new_user.dart';
 part 'model/statistics.dart';

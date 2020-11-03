@@ -50,7 +50,7 @@ class ApiClient {
         case 'Location':
           return new Location.fromJson(value);
         case 'LocationList':
-          return new LocationList.fromJson(value);
+          return Location.listFromJson(value);
         case 'NewLocation':
           return new NewLocation.fromJson(value);
         case 'NewUser':
