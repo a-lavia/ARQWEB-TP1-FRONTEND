@@ -70,6 +70,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             newUser.email = _emailTextController.text;
             try {
               await Client.getInstance().userApi.createUser(newUser);
+              Navigator.pop(context);
             } catch (e) {
               Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
               print("Error: $e\n");
