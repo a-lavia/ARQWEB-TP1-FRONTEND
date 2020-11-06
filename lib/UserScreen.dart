@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
 import 'package:yoestuveahi/LocationInfoScreen.dart';
 import 'package:yoestuveahi/QRScannerScreen.dart';
+import 'package:yoestuveahi/ViewLocationScreen.dart';
 import 'Client.dart';
 import 'ErrorScreen.dart';
 import 'RegisterLocationScreen.dart';
@@ -132,11 +133,23 @@ class _UserScreenState extends State<UserScreen> {
     }
   }
 
+  void _locationViewOnPressed() async {
+    try {
+      List<Location> locations = await Client.getInstance().locationApi.locationGet();
+      print(locations);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ViewLocationScreen(locations: locations)));
+    } catch (e) {
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => ErrorScreen(apiException: e)));
+      print("Error: $e\n");
+    }
+  }
+
   Widget _buildLocationInfoBtn() {
     return button(
-      text: 'VER LOCACIÓN',
+      text: 'VER LOCACIONES',
       onPressed: () {
-        _locationInfoOnPressed();
+        _locationViewOnPressed();
       }
     );
   }
