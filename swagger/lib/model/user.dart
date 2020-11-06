@@ -10,11 +10,13 @@ class User {
 
   bool possiblyInfected = null;
 
+  bool isAdmin = null;
+
   User();
 
   @override
   String toString() {
-    return 'User[email=$email, isCheckedIn=$isCheckedIn, isInfected=$isInfected, possiblyInfected=$possiblyInfected, ]';
+    return 'User[email=$email, isCheckedIn=$isCheckedIn, isInfected=$isInfected, possiblyInfected=$possiblyInfected, isAdmin=$isAdmin, ]';
   }
 
   User.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class User {
     isCheckedIn = json['isCheckedIn'];
     isInfected = json['isInfected'];
     possiblyInfected = json['possiblyInfected'];
+    isAdmin = json['isAdmin'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,7 +33,8 @@ class User {
       'email': email,
       'isCheckedIn': isCheckedIn,
       'isInfected': isInfected,
-      'possiblyInfected': possiblyInfected
+      'possiblyInfected': possiblyInfected,
+      'isAdmin': isAdmin
      };
   }
 

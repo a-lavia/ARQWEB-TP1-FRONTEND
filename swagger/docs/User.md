@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **isCheckedIn** | **bool** |  | [optional] [default to null]
 **isInfected** | **bool** |  | [optional] [default to null]
 **possiblyInfected** | **bool** |  | [optional] [default to null]
+**isAdmin** | **bool** |  | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
