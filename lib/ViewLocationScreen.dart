@@ -6,7 +6,6 @@ import 'package:swagger/api.dart';
 import 'StyleUtils.dart';
 
 class ViewLocationScreen extends StatefulWidget {
-
   final List<Location> locations;
 
   ViewLocationScreen({Key key, @required this.locations}) : super(key: key);
@@ -29,17 +28,18 @@ class _ViewLocationScreenState extends State<ViewLocationScreen> {
 
   Widget _buildMap() {
     widget.locations.forEach((location) {
-      
       double lat = double.parse(location.latitude);
       double lng = double.parse(location.longitude);
-      
+      String locationInfo =
+          "${location.address} - ${location.occupation}/${location.maxCapacity}";
+
       Marker marker = Marker(
-        //FIXME: El backend esta entregando la id en null, hay que arreglar eso y usarla aca
-          markerId: MarkerId(location.description),
+          //FIXME: El backend esta entregando la id en null, hay que arreglar eso y usarla aca
+          markerId: MarkerId(location.id),
           position: LatLng(lat, lng),
           //TODO: Obtener el nombre de la locación y mostrar todos sus datos
-          infoWindow: InfoWindow(title: location.address)
-      );
+          infoWindow:
+              InfoWindow(title: location.description, snippet: locationInfo));
 
       _markers.add(marker);
     });
@@ -62,15 +62,13 @@ class _ViewLocationScreenState extends State<ViewLocationScreen> {
     return Scaffold(
         body: BackgroundFrame(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Locaciones Registradas', style: subtitleTextStyle),
-                SizedBox(height: 30.0),
-                _buildMap(),
-                backButton(context)
-              ],
-            )
-        )
-    );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('Locaciones Registradas', style: subtitleTextStyle),
+        SizedBox(height: 30.0),
+        _buildMap(),
+        backButton(context)
+      ],
+    )));
   }
 }
