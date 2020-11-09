@@ -31,7 +31,8 @@ class LocationInfoScreen extends StatelessWidget {
 
     var imagenes = List<Image>();
     for (var img in location.images) {
-      imagenes.add(Image.network(img));
+      //FIXME: no debería estar hardcodeada
+      imagenes.add(Image.network('https://yoestuveahi.herokuapp.com' + img));
     }
     var imgGrid = GridView.count(
       crossAxisCount: 3,
