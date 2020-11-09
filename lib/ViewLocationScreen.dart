@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:swagger/api.dart';
@@ -27,35 +26,18 @@ class _ViewLocationScreenState extends State<ViewLocationScreen> {
     zoom: 12.0,
   );
 
-  void _mostrarImagenes(Location location) {
-    for (var img in location.images) {
-      //FIXME: no debería estar hardcodeada
-      js.context
-          .callMethod('open', ['https://yoestuveahi.herokuapp.com' + img]);
-    }
-  }
-
   Widget _buildMap() {
     widget.locations.forEach((location) {
       double lat = double.parse(location.latitude);
       double lng = double.parse(location.longitude);
-      String locationInfo =
-          "${location.address} - ${location.occupation}/${location.maxCapacity}";
 
       Marker marker = Marker(
-          //FIXME: El backend esta entregando la id en null, hay que arreglar eso y usarla aca
           markerId: MarkerId(location.id),
           position: LatLng(lat, lng),
-          //TODO: Obtener el nombre de la locación y mostrar todos sus datos
-          infoWindow: InfoWindow(
-            title: location.description,
-            snippet: locationInfo,
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        LocationInfoScreen(location: location))),
-          ));
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => LocationInfoScreen(location: location)));
+          }
+      );
 
       _markers.add(marker);
     });
