@@ -14,6 +14,13 @@ final subtitleTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+final subSubtitleTextStyle = TextStyle(
+  color: Colors.white,
+  fontFamily: 'OpenSans',
+  fontSize: 20.0,
+  fontWeight: FontWeight.bold,
+);
+
 final textFieldHintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',
@@ -96,7 +103,15 @@ class BackgroundFrame extends StatelessWidget {
   }
 }
 
-Widget textField({name='Text Field', hint = 'Hint...', keyboardType = TextInputType.text, obscureText = false, controller, validator, icon = Icons.add, inputFormatters}) {
+Widget textField(
+    {name = 'Text Field',
+    hint = 'Hint...',
+    keyboardType = TextInputType.text,
+    obscureText = false,
+    controller,
+    validator,
+    icon = Icons.add,
+    inputFormatters}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -132,7 +147,7 @@ Widget textField({name='Text Field', hint = 'Hint...', keyboardType = TextInputT
   );
 }
 
-Widget button({text='BUTTON', onPressed}) {
+Widget button({text = 'BUTTON', onPressed}) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 25.0),
     width: double.infinity,
@@ -158,23 +173,26 @@ Widget button({text='BUTTON', onPressed}) {
   );
 }
 
-Widget backButton(BuildContext context, {text='VOLVER'}) {
+Widget backButton(BuildContext context, {text = 'VOLVER'}) {
   return button(
-    text: text,
-    onPressed: () {
-      Navigator.pop(context);
-    }
-  );
+      text: text,
+      onPressed: () {
+        Navigator.pop(context);
+      });
 }
 
-void showAlertDialogOptions(BuildContext context, {msg = '', title = 'Alerta!', accept = 'Continuar', @required acceptAction, cancel = 'Cancelar'}) {
+void showAlertDialogOptions(BuildContext context,
+    {msg = '',
+    title = 'Alerta!',
+    accept = 'Continuar',
+    @required acceptAction,
+    cancel = 'Cancelar'}) {
   Widget acceptButton = FlatButton(
-    child: Text(accept),
-    onPressed: () {
-      Navigator.of(context).pop();
-      acceptAction();
-    }
-  );
+      child: Text(accept),
+      onPressed: () {
+        Navigator.of(context).pop();
+        acceptAction();
+      });
 
   Widget cancelButton = FlatButton(
     child: Text(cancel),
@@ -186,10 +204,7 @@ void showAlertDialogOptions(BuildContext context, {msg = '', title = 'Alerta!', 
   AlertDialog alert = AlertDialog(
     title: Text(title),
     content: Text(msg),
-    actions: [
-      cancelButton,
-      acceptButton
-    ],
+    actions: [cancelButton, acceptButton],
   );
 
   showDialog(
@@ -200,8 +215,8 @@ void showAlertDialogOptions(BuildContext context, {msg = '', title = 'Alerta!', 
   );
 }
 
-
-void showAlertDialog(BuildContext context, {msg = '', title = 'Alerta!', accept = 'Aceptar'}) {
+void showAlertDialog(BuildContext context,
+    {msg = '', title = 'Alerta!', accept = 'Aceptar'}) {
   Widget acceptButton = FlatButton(
     child: Text(accept),
     onPressed: () {
@@ -212,9 +227,7 @@ void showAlertDialog(BuildContext context, {msg = '', title = 'Alerta!', accept 
   AlertDialog alert = AlertDialog(
     title: Text(title),
     content: Text(msg),
-    actions: [
-      acceptButton
-    ],
+    actions: [acceptButton],
   );
 
   showDialog(
