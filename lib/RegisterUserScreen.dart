@@ -68,6 +68,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
           if (_formKey.currentState.validate()) {
             NewUser newUser = NewUser();
             newUser.email = _emailTextController.text;
+            newUser.password = _passwordTextController.text;
             try {
               await Client.getInstance().userApi.createUser(newUser);
               Navigator.pop(context);
