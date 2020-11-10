@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:swagger/api.dart';
+import 'package:yoestuveahi/StyleUtils.dart';
 
 class DashBoardScreen extends StatefulWidget {
+  final Statistics statistics;
+
+  DashBoardScreen({Key key, @required this.statistics}) : super(key: key);
+
   @override
   _DashBoardScreenState createState() => _DashBoardScreenState();
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xFFFF8B81),
         dividerColor: Colors.grey,
       ),
-      home: DashboardScreen(),
+      home: DashboardScreen(statistics: widget.statistics),
     );
   }
 }
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({
-    Key key,
-  }) : super(key: key);
+  final Statistics statistics;
+  const DashboardScreen({Key key, @required this.statistics}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,7 @@ class DashboardScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Datos al dia de: $now' ,
+                              'Datos al dia de: $now',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -58,7 +62,7 @@ class DashboardScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                     ],
+                    ],
                   ),
                   Divider(height: 1.0),
                 ],
@@ -70,37 +74,30 @@ class DashboardScreen extends StatelessWidget {
                   Expanded(
                     child: DashboardButton(
                       icon: Icons.person,
-                      text: 'Usuarios Registrados',
-                      onTap: () {showDialog(
-          context: context, 
-          builder: (context)=> AlertDialog(
-            title: Text(''),
-            content: Text('Usuarios registrados: '),
-            actions: <Widget> [
-             FlatButton(
-                child: Text('Aceptar'),
-                onPressed: (){Navigator.of(context).pop();},
-              )
-            ],)
-            );},
+                      text: '${statistics.nUsers} Usuarios Registrados',
+                      /*
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text(''),
+                                  content: Text('Usuarios registrados: '),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Aceptar'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                ));
+                      },*/
                     ),
                   ),
                   Expanded(
                     child: DashboardButton(
                       icon: Icons.access_alarm,
-                      text: 'Potencial Infectados',
-                      onTap: () {showDialog(
-          context: context, 
-          builder: (context)=> AlertDialog(
-            title: Text(''),
-            content: Text('Personas en riesgo de estar infectados: '),
-            actions: <Widget> [
-             FlatButton(
-                child: Text('Aceptar'),
-                onPressed: (){Navigator.of(context).pop();},
-              )
-            ],)
-            );},
+                      text: '${statistics.nRisks} Potenciales Infectados',
                     ),
                   ),
                 ],
@@ -111,44 +108,34 @@ class DashboardScreen extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: DashboardButton(
-                      icon: Icons.map_rounded,
-                      text: 'Locaciones Registradas',
-                      onTap: () {showDialog(
-          context: context, 
-          builder: (context)=> AlertDialog(
-            title: Text(''),
-            content: Text('Locaciones registradas: '),
-            actions: <Widget> [
-             FlatButton(
-                child: Text('Aceptar'),
-                onPressed: (){Navigator.of(context).pop();},
-              )
-            ],)
-            );},
-                    ),
+                        icon: Icons.map_rounded,
+                        text:
+                            '${statistics.nLocations} Locaciones Registradas'),
                   ),
                   Expanded(
                     child: DashboardButton(
-                      icon: Icons.coronavirus_sharp,
-                      text: 'Personas Infectadas',
-                      onTap: () {showDialog(
-          context: context, 
-          builder: (context)=> AlertDialog(
-            title: Text(''),
-            content: Text('Personas Infectadas: '),
-            actions: <Widget> [
-             FlatButton(
-                child: Text('Aceptar'),
-                onPressed: (){Navigator.of(context).pop();},
-              )
-            ],)
-            );},
-                    ),
+                        icon: Icons.coronavirus_sharp,
+                        text: '${statistics.nInfections} Personas Infectadas'),
                   ),
                 ],
               ),
             ),
-           ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  button(
+                    text: 'Volver',
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -187,7 +174,7 @@ class DashboardButton extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-              textScaleFactor: 0.8,
+              textScaleFactor: 1,
             ),
             SizedBox(height: 1.0),
             Padding(

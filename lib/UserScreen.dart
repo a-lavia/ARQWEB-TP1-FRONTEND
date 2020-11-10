@@ -6,6 +6,7 @@ import 'package:yoestuveahi/ViewLocationScreen.dart';
 import 'Client.dart';
 import 'ErrorScreen.dart';
 import 'RegisterLocationScreen.dart';
+import 'DashBoardScreen.dart';
 import 'StyleUtils.dart';
 
 class UserScreen extends StatefulWidget {
@@ -17,34 +18,38 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-
   void _refresh() async {
     User user;
     try {
       user = await Client.getInstance().userApi.getUser();
     } catch (e) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ErrorScreen(apiException: e)));
       print("Error: $e\n");
     }
     setState(() {
-        widget.user.isCheckedIn = user.isCheckedIn;
-        widget.user.possiblyInfected = user.possiblyInfected;
-        widget.user.isInfected = user.isInfected;
+      widget.user.isCheckedIn = user.isCheckedIn;
+      widget.user.possiblyInfected = user.possiblyInfected;
+      widget.user.isInfected = user.isInfected;
     });
   }
 
   void _doCheckIn() async {
-    String locationId = await Navigator.push(context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
+    String locationId = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
     if (locationId != null) {
       try {
-        await Client
-            .getInstance()
+        await Client.getInstance()
             .checkApi
             .userCheckinLocationIdPost(locationId);
         _refresh();
       } catch (e) {
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ErrorScreen(apiException: e)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ErrorScreen(apiException: e)));
         print("Error: $e\n");
       }
     }
@@ -55,9 +60,8 @@ class _UserScreenState extends State<UserScreen> {
       showAlertDialogOptions(context,
           msg: 'Usted podría estar infectado, ¿seguro que desea continuar?',
           acceptAction: () {
-            _doCheckIn();
-          }
-      );
+        _doCheckIn();
+      });
     } else {
       _doCheckIn();
     }
@@ -66,8 +70,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget _buildCheckInBtn() {
     return button(
         text: 'CHECK IN',
-        onPressed: widget.user.isInfected ? null : _checkInOnPressed
-    );
+        onPressed: widget.user.isInfected ? null : _checkInOnPressed);
   }
 
   void _doCheckout() async {
@@ -75,18 +78,20 @@ class _UserScreenState extends State<UserScreen> {
       await Client.getInstance().checkApi.userCheckoutPost();
       _refresh();
     } catch (e) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ErrorScreen(apiException: e)));
       print("Error: $e\n");
     }
   }
 
   Widget _buildCheckOutBtn() {
     return button(
-      text: 'CHECK OUT',
-      onPressed: () {
-        _doCheckout();
-      }
-    );
+        text: 'CHECK OUT',
+        onPressed: () {
+          _doCheckout();
+        });
   }
 
   void _showCalendar() {
@@ -94,40 +99,41 @@ class _UserScreenState extends State<UserScreen> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2001),
-        lastDate: DateTime(2021)
-    );
+        lastDate: DateTime(2021));
   }
 
   Widget _buildReportPositiveBtn() {
-    return button(
-        text: 'REPORTAR TEST POSITIVO',
-        onPressed: _showCalendar
-    );
+    return button(text: 'REPORTAR TEST POSITIVO', onPressed: _showCalendar);
   }
 
   Widget _buildReportCuredBtn() {
-    return button(
-        text: 'REPORTAR ALTA MÉDICA',
-        onPressed: _showCalendar
-    );
+    return button(text: 'REPORTAR ALTA MÉDICA', onPressed: _showCalendar);
   }
 
   Widget _buildReportNegativeBtn() {
     return button(
         text: 'REPORTAR TEST NEGATIVO',
-        onPressed: _showCalendar//TODO: Importa la fecha?
-    );
+        onPressed: _showCalendar //TODO: Importa la fecha?
+        );
   }
 
   void _locationInfoOnPressed() async {
-    String locationId = await Navigator.push(context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
+    String locationId = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
     if (locationId != null) {
       try {
-        Location location = await Client.getInstance().locationApi.locationLocationIdGet(locationId);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LocationInfoScreen(location: location)));
+        Location location = await Client.getInstance()
+            .locationApi
+            .locationLocationIdGet(locationId);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LocationInfoScreen(location: location)));
       } catch (e) {
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ErrorScreen(apiException: e)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ErrorScreen(apiException: e)));
         print("Error: $e\n");
       }
     }
@@ -135,31 +141,66 @@ class _UserScreenState extends State<UserScreen> {
 
   void _locationViewOnPressed() async {
     try {
-      List<Location> locations = await Client.getInstance().locationApi.locationGet();
+      List<Location> locations =
+          await Client.getInstance().locationApi.locationGet();
       print(locations);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ViewLocationScreen(locations: locations)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ViewLocationScreen(locations: locations)));
     } catch (e) {
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ErrorScreen(apiException: e)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ErrorScreen(apiException: e)));
       print("Error: $e\n");
     }
   }
 
   Widget _buildLocationInfoBtn() {
     return button(
-      text: 'VER LOCACIONES',
-      onPressed: () {
-        _locationViewOnPressed();
-      }
-    );
+        text: 'VER LOCACIONES',
+        onPressed: () {
+          _locationViewOnPressed();
+        });
   }
 
   Widget _buildRegisterLocationBtn() {
     return button(
         text: 'CREAR LOCACIÓN',
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => RegisterLocationScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RegisterLocationScreen()));
+        });
+  }
+
+  void _dashboardViewOnPressed() async {
+    try {
+      Statistics statistics =
+          await Client.getInstance().adminApi.statisticsGet();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DashBoardScreen(statistics: statistics)));
+    } catch (e) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ErrorScreen(apiException: e)));
+      print("Error: $e\n");
+    }
+  }
+
+  Widget _buildDashboardBtn() {
+    if (!widget.user.isAdmin) {
+      return SizedBox();
+    }
+    return button(
+        text: 'VER DASHBOARD',
+        onPressed: () {
+          _dashboardViewOnPressed();
         });
   }
 
@@ -169,7 +210,8 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildMenu() {
     List<Widget> widgets = <Widget>[];
-    widgets.add(Text('Bienvenido ${widget.user.email}', style: subtitleTextStyle));
+    widgets
+        .add(Text('Bienvenido ${widget.user.email}', style: subtitleTextStyle));
     if (!widget.user.isCheckedIn) {
       widgets.add(_buildCheckInBtn());
     } else {
@@ -179,14 +221,16 @@ class _UserScreenState extends State<UserScreen> {
       widgets.add(_buildReportCuredBtn());
     } else {
       widgets.add(_buildReportPositiveBtn());
-        if (widget.user.possiblyInfected) {
-          widgets.add(_buildReportNegativeBtn());
-        }
+      if (widget.user.possiblyInfected) {
+        widgets.add(_buildReportNegativeBtn());
+      }
     }
     widgets.add(_buildLocationInfoBtn());
     widgets.add(_buildRegisterLocationBtn());
+    widgets.add(_buildDashboardBtn());
     widgets.add(_buildExitBtn());
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: widgets);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center, children: widgets);
   }
 
   Widget _buildHealthStatusBtn() {
@@ -213,10 +257,9 @@ class _UserScreenState extends State<UserScreen> {
     widget.user.possiblyInfected = true;
     widget.user.isInfected = false;
     return Scaffold(
-      body: BackgroundFrame(
+        body: BackgroundFrame(
           child: _buildMenu(),
-      ),
-      floatingActionButton: _buildHealthStatusBtn()
-    );
+        ),
+        floatingActionButton: _buildHealthStatusBtn());
   }
 }
