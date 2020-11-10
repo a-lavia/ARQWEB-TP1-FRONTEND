@@ -2,28 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
 import 'package:yoestuveahi/StyleUtils.dart';
 
-class DashBoardScreen extends StatefulWidget {
-  final Statistics statistics;
-
-  DashBoardScreen({Key key, @required this.statistics}) : super(key: key);
-
-  @override
-  _DashBoardScreenState createState() => _DashBoardScreenState();
-}
-
-class _DashBoardScreenState extends State<DashBoardScreen> {
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xFFFF8B81),
-        dividerColor: Colors.grey,
-      ),
-      home: DashboardScreen(statistics: widget.statistics),
-    );
-  }
-}
-
 class DashboardScreen extends StatelessWidget {
   final Statistics statistics;
   const DashboardScreen({Key key, @required this.statistics}) : super(key: key);

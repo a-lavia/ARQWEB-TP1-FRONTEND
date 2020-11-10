@@ -183,7 +183,7 @@ class _UserScreenState extends State<UserScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => DashBoardScreen(statistics: statistics)));
+              builder: (context) => DashboardScreen(statistics: statistics)));
     } catch (e) {
       Navigator.push(
           context,
@@ -194,14 +194,12 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Widget _buildDashboardBtn() {
-    if (!widget.user.isAdmin) {
-      return SizedBox();
-    }
     return button(
         text: 'VER DASHBOARD',
         onPressed: () {
           _dashboardViewOnPressed();
-        });
+        }
+    );
   }
 
   Widget _buildExitBtn() {
@@ -210,13 +208,14 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildMenu() {
     List<Widget> widgets = <Widget>[];
-    widgets
-        .add(Text('Bienvenido ${widget.user.email}', style: subtitleTextStyle));
+    widgets.add(Text('Bienvenido ${widget.user.email}', style: subtitleTextStyle));
+
     if (!widget.user.isCheckedIn) {
       widgets.add(_buildCheckInBtn());
     } else {
       widgets.add(_buildCheckOutBtn());
     }
+
     if (widget.user.isInfected) {
       widgets.add(_buildReportCuredBtn());
     } else {
@@ -225,12 +224,17 @@ class _UserScreenState extends State<UserScreen> {
         widgets.add(_buildReportNegativeBtn());
       }
     }
+
     widgets.add(_buildLocationInfoBtn());
     widgets.add(_buildRegisterLocationBtn());
-    widgets.add(_buildDashboardBtn());
+
+    if (widget.user.isAdmin) {
+      widgets.add(_buildDashboardBtn());
+    }
+
     widgets.add(_buildExitBtn());
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center, children: widgets);
+
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: widgets);
   }
 
   Widget _buildHealthStatusBtn() {
