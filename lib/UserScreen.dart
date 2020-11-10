@@ -36,6 +36,43 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
+  ///
+  /// Consultar locación
+  ///
+
+  void _locationInfoOnPressed() async {
+    String locationId = await Navigator.push(context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
+    if (locationId != null) {
+      try {
+        Location location = await Client.getInstance()
+            .locationApi
+            .locationLocationIdGet(locationId);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LocationInfoScreen(location: location)));
+      } catch (e) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ErrorScreen(apiException: e)));
+        print("Error: $e\n");
+      }
+    }
+  }
+
+  Widget _buildLocationInfoBtn() {
+    return button(
+        text: 'CONSULTAR LOCACION',
+        onPressed: () {
+          _locationInfoOnPressed();
+        });
+  }
+
+  ///
+  /// CheckIn
+  ///
+
   void _doCheckIn() async {
     String locationId = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
@@ -73,6 +110,10 @@ class _UserScreenState extends State<UserScreen> {
         onPressed: widget.user.isInfected ? null : _checkInOnPressed);
   }
 
+  ///
+  /// CheckOut
+  ///
+
   void _doCheckout() async {
     try {
       await Client.getInstance().checkApi.userCheckoutPost();
@@ -94,6 +135,10 @@ class _UserScreenState extends State<UserScreen> {
         });
   }
 
+  ///
+  /// Report buttons
+  ///
+
   void _showCalendar() {
     showDatePicker(
         context: context,
@@ -111,38 +156,34 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Widget _buildReportNegativeBtn() {
+    return button(text: 'REPORTAR TEST NEGATIVO', onPressed: _showCalendar);
+  }
+
+
+  ///
+  /// Register Location
+  ///
+
+  void _registerLocationOnPressed() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RegisterLocationScreen()));
+  }
+
+  Widget _buildRegisterLocationBtn() {
     return button(
-        text: 'REPORTAR TEST NEGATIVO',
-        onPressed: _showCalendar //TODO: Importa la fecha?
-        );
+        text: 'CREAR LOCACIÓN',
+        onPressed: _registerLocationOnPressed);
   }
 
-  void _locationInfoOnPressed() async {
-    String locationId = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
-    if (locationId != null) {
-      try {
-        Location location = await Client.getInstance()
-            .locationApi
-            .locationLocationIdGet(locationId);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LocationInfoScreen(location: location)));
-      } catch (e) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ErrorScreen(apiException: e)));
-        print("Error: $e\n");
-      }
-    }
-  }
+  ///
+  /// Location Map
+  ///
 
-  void _locationViewOnPressed() async {
+  void _locationsMapOnPressed() async {
     try {
-      List<Location> locations =
-          await Client.getInstance().locationApi.locationGet();
+      List<Location> locations = await Client.getInstance().locationApi.locationGet();
       print(locations);
       Navigator.push(
           context,
@@ -157,29 +198,21 @@ class _UserScreenState extends State<UserScreen> {
     }
   }
 
-  Widget _buildLocationInfoBtn() {
+  Widget _buildLocationsMapBtn() {
     return button(
-        text: 'VER LOCACIONES',
+        text: 'MAPA LOCACIONES',
         onPressed: () {
-          _locationViewOnPressed();
+          _locationsMapOnPressed();
         });
   }
 
-  Widget _buildRegisterLocationBtn() {
-    return button(
-        text: 'CREAR LOCACIÓN',
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RegisterLocationScreen()));
-        });
-  }
+  ///
+  /// Dashboard
+  ///
 
   void _dashboardViewOnPressed() async {
     try {
-      Statistics statistics =
-          await Client.getInstance().adminApi.statisticsGet();
+      Statistics statistics =await Client.getInstance().adminApi.statisticsGet();
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -202,13 +235,22 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
+  ///
+  /// Exit
+  ///
   Widget _buildExitBtn() {
     return backButton(context, text: 'SALIR');
   }
 
+  ///
+  /// Build Menu
+  ///
+
   Widget _buildMenu() {
     List<Widget> widgets = <Widget>[];
     widgets.add(Text('Bienvenido ${widget.user.email}', style: subtitleTextStyle));
+
+    widgets.add(_buildLocationInfoBtn());
 
     if (!widget.user.isCheckedIn) {
       widgets.add(_buildCheckInBtn());
@@ -225,10 +267,10 @@ class _UserScreenState extends State<UserScreen> {
       }
     }
 
-    widgets.add(_buildLocationInfoBtn());
     widgets.add(_buildRegisterLocationBtn());
-
+    
     if (widget.user.isAdmin) {
+      widgets.add(_buildLocationsMapBtn());
       widgets.add(_buildDashboardBtn());
     }
 
@@ -257,9 +299,6 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //DEBUG
-    widget.user.possiblyInfected = true;
-    widget.user.isInfected = false;
     return Scaffold(
         body: BackgroundFrame(
           child: _buildMenu(),
