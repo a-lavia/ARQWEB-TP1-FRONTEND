@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             Client.getInstance()
-                .setAuthorization(_emailTextController.text, "");
+                .setAuthorization(_emailTextController.text, _passwordTextController.text);
             try {
               User user = await Client.getInstance().userApi.getUser();
               Navigator.push(
