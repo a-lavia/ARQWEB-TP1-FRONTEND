@@ -4,21 +4,25 @@ class NewUser {
   
   String email = null;
 
+  String password = null;
+
   NewUser();
 
   @override
   String toString() {
-    return 'NewUser[email=$email, ]';
+    return 'NewUser[email=$email, password=$password, ]';
   }
 
   NewUser.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     email = json['email'];
+    password = json['password'];
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'email': email
+      'email': email,
+      'password': password
      };
   }
 
