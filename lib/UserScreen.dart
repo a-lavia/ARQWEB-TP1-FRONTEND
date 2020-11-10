@@ -139,24 +139,50 @@ class _UserScreenState extends State<UserScreen> {
   /// Report buttons
   ///
 
-  void _showCalendar() {
+  void _showCalendar(acceptAction) {
     showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2001),
-        lastDate: DateTime(2021));
+        lastDate: DateTime(2021)).then(
+          (date) {
+            if (date != null) {
+              acceptAction(date);
+            }
+          }
+    );
+  }
+  
+  void _reportPositive(DateTime date) async {
+    try {
+      await Client.getInstance().diagnosticApi.userDiagnosticDatePost(date.millisecondsSinceEpoch.toString());
+      _refresh();
+    } catch (e) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+      print("Error: $e\n");
+    }
+  }
+
+  void _reportNegative(DateTime date) async {
+    try {
+      await Client.getInstance().diagnosticApi.userDiagnosticDateDelete(date.millisecondsSinceEpoch.toString());
+      _refresh();
+    } catch (e) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen(apiException: e)));
+      print("Error: $e\n");
+    }
   }
 
   Widget _buildReportPositiveBtn() {
-    return button(text: 'REPORTAR TEST POSITIVO', onPressed: _showCalendar);
+    return button(text: 'REPORTAR TEST POSITIVO', onPressed: () {_showCalendar(_reportPositive);});
   }
 
   Widget _buildReportCuredBtn() {
-    return button(text: 'REPORTAR ALTA MÉDICA', onPressed: _showCalendar);
+    return button(text: 'REPORTAR ALTA MÉDICA', onPressed: () {_showCalendar(_reportNegative);});
   }
 
   Widget _buildReportNegativeBtn() {
-    return button(text: 'REPORTAR TEST NEGATIVO', onPressed: _showCalendar);
+    return button(text: 'REPORTAR TEST NEGATIVO', onPressed: () {_showCalendar(_reportNegative);});
   }
 
 
