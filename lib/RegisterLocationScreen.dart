@@ -1,3 +1,7 @@
+import 'dart:convert';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,6 +24,7 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
   final TextEditingController _capacityTextController = TextEditingController();
   final TextEditingController _descriptionTextController = TextEditingController();
   LatLng _position;
+  var imageFileBytes;
 
 
   Widget _buildNameTextField() {
@@ -90,12 +95,35 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
         });
   }
 
+  void _selectFiles() {
+    InputElement uploadInput = FileUploadInputElement();
+    uploadInput.multiple = false;
+    uploadInput.draggable = true;
+    uploadInput.accept = 'image/*';
+    uploadInput.click();
+    document.body.append(uploadInput);
+    uploadInput.onChange.listen((e) {
+      final files = uploadInput.files;
+      final file = files[0];
+      final reader = new FileReader();
+      reader.onLoadEnd.listen((e) {
+        var _bytesData = Base64Decoder().convert(reader.result.toString().split(",").last);
+        setState(() {
+          imageFileBytes = _bytesData;
+        });
+      });
+      reader.readAsDataUrl(file);
+    });
+
+    uploadInput.remove();
+  }
+
   Widget _buildUploadImageBtn() {
     return button(
         text: 'SUBIR IMAGEN',
         //TODO: Subir imagen
-        onPressed: () async {
-        });
+        onPressed: _selectFiles
+    );
   }
 
   Widget _buildCreateBtn() {
@@ -111,6 +139,7 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
               newLocation.address = _addressTextController.text;
               newLocation.description = _descriptionTextController.text;
               //newLocation.images = _nameTextController.text;//TODO: Subir imagen
+              newLocation.fileBytes = imageFileBytes;
               newLocation.maxCapacity = double.parse(_capacityTextController.text);
               newLocation.latitude = _position.latitude.toString();
               newLocation.longitude = _position.longitude.toString();

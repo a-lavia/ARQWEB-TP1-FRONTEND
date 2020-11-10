@@ -39,6 +39,10 @@ class Client {
     return _instance;
   }
 
+  String getBasePath() {
+    return _apiClient.basePath;
+  }
+
   void setAuthorization(String username, String password) {
     _apiClient.setAuthorization(username, password);
   }

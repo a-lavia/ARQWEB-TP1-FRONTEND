@@ -16,6 +16,9 @@ class NewLocation {
 
   String images = null;
 
+  //TODO: Subir Imagen
+  var fileBytes;
+
   NewLocation();
 
   @override

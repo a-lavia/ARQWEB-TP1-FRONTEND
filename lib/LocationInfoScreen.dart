@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swagger/api.dart';
+import 'Client.dart';
 import 'StyleUtils.dart';
 
 class LocationInfoScreen extends StatelessWidget {
@@ -7,32 +8,22 @@ class LocationInfoScreen extends StatelessWidget {
 
   LocationInfoScreen({Key key, @required this.location}) : super(key: key);
 
-  List<Widget> _children(Location location, context) {
-    var body = <Widget>[
-      Text(location.description, style: subtitleTextStyle),
-      SizedBox(height: 30.0),
-      Text(
-        "Dirección: ${location.address}",
-        style: subSubtitleTextStyle,
-      ),
-      Text(
-        "Ocupación actual: ${location.occupation}",
-        style: subSubtitleTextStyle,
-      ),
-      Text(
-        "Capacidad máxima: ${location.maxCapacity}",
-        style: subSubtitleTextStyle,
-      ),
-    ];
+  Widget _buildLocationInfo(BuildContext context) {
+    List<Widget> widgets = <Widget>[];
+
+    widgets.add(Text(location.name, style: subtitleTextStyle));
+    widgets.add(SizedBox(height: 30.0));
+    widgets.add(Text("Descripción: ${location.description}", style: subSubtitleTextStyle));
+    widgets.add(Text("Dirección: ${location.address}", style: subSubtitleTextStyle));
+    widgets.add(Text("Ocupación: ${location.occupation}/${location.maxCapacity}", style: subSubtitleTextStyle));
 
     if (location.images.isNotEmpty) {
-      body.add(SizedBox(height: 30.0));
+      widgets.add(SizedBox(height: 30.0));
     }
 
     var imagenes = List<Image>();
     for (var img in location.images) {
-      //FIXME: no debería estar hardcodeada
-      imagenes.add(Image.network('https://yoestuveahi.herokuapp.com' + img));
+      imagenes.add(Image.network(Client.getInstance().getBasePath() + img));
     }
     var imgGrid = GridView.count(
       crossAxisCount: 3,
@@ -43,21 +34,20 @@ class LocationInfoScreen extends StatelessWidget {
     );
 
     if (location.images.isNotEmpty) {
-      body.add(imgGrid);
+      widgets.add(imgGrid);
     }
 
-    body.add(SizedBox(height: 30.0));
-    body.add(backButton(context));
+    widgets.add(backButton(context));
 
-    return body;
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: widgets);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BackgroundFrame(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: _children(location, context))));
+            child: _buildLocationInfo(context)
+      )
+    );
   }
 }
