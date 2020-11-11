@@ -23,7 +23,7 @@ class Client {
 
   Client._internal() {
     //Colocar aquí la dirección del servidor
-    _apiClient = ApiClient(basePath: "http://localhost:3000");
+    _apiClient = ApiClient(basePath: "https://yoestuveahi.herokuapp.com");
 
     _userApi = UserApi(_apiClient);
     _adminApi = AdminApi(_apiClient);

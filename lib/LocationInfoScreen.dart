@@ -23,8 +23,10 @@ class LocationInfoScreen extends StatelessWidget {
     List<Widget> widgets = <Widget>[];
 
     widgets.add(Text(location.name, style: subtitleTextStyle));
-    widgets.add(SizedBox(height: 30.0));
-    widgets.add(_buildQRImage());
+    if (location.id != null) {
+      widgets.add(SizedBox(height: 30.0));
+      widgets.add(_buildQRImage());
+    }
     widgets.add(SizedBox(height: 30.0));
     widgets.add(Text("Descripción: ${location.description}", style: subSubtitleTextStyle));
     widgets.add(Text("Dirección: ${location.address}", style: subSubtitleTextStyle));
