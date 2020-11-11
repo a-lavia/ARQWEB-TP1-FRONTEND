@@ -1,6 +1,7 @@
 import 'dart:convert';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,8 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
   final TextEditingController _capacityTextController = TextEditingController();
   final TextEditingController _descriptionTextController = TextEditingController();
   LatLng _position;
-  var imageFileBytes;
+  Uint8List imageFileBytes;
+  String imageFileName;
 
 
   Widget _buildNameTextField() {
@@ -107,9 +109,10 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
       final file = files[0];
       final reader = new FileReader();
       reader.onLoadEnd.listen((e) {
-        var _bytesData = Base64Decoder().convert(reader.result.toString().split(",").last);
+        Uint8List _bytesData = Base64Decoder().convert(reader.result.toString().split(",").last);
         setState(() {
           imageFileBytes = _bytesData;
+          imageFileName = file.name;
         });
       });
       reader.readAsDataUrl(file);
@@ -121,7 +124,6 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
   Widget _buildUploadImageBtn() {
     return button(
         text: 'SUBIR IMAGEN',
-        //TODO: Subir imagen
         onPressed: _selectFiles
     );
   }
@@ -138,8 +140,8 @@ class _RegisterLocationScreenState extends State<RegisterLocationScreen> {
               newLocation.name = _nameTextController.text;
               newLocation.address = _addressTextController.text;
               newLocation.description = _descriptionTextController.text;
-              //newLocation.images = _nameTextController.text;//TODO: Subir imagen
-              newLocation.fileBytes = imageFileBytes;
+              newLocation.imageFileBytes = imageFileBytes;
+              newLocation.images = imageFileName;
               newLocation.maxCapacity = double.parse(_capacityTextController.text);
               newLocation.latitude = _position.latitude.toString();
               newLocation.longitude = _position.longitude.toString();

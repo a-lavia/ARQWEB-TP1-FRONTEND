@@ -229,10 +229,9 @@ class LocationApi {
         hasFields = true;
         mp.fields['longitude'] = parameterToString(body.longitude);
       }
-      if (body.images == null) {
+      if (body.images != null) {
         hasFields = true;
-        //mp.fields['images'] = 'test';
-        mp.files.add(MultipartFile.fromBytes('images', body.fileBytes, filename: 'test.png'));
+        mp.files.add(MultipartFile.fromBytes('images', body.imageFileBytes, filename: body.images));
       }
       if(hasFields)
         postBody = mp;
