@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:swagger/api.dart';
 import 'Client.dart';
 import 'StyleUtils.dart';
@@ -8,10 +9,22 @@ class LocationInfoScreen extends StatelessWidget {
 
   LocationInfoScreen({Key key, @required this.location}) : super(key: key);
 
+  Widget _buildQRImage() {
+    return QrImage(
+      data: location.id,
+      padding: const EdgeInsets.all(10.0),
+      size: 250,
+      errorCorrectionLevel: QrErrorCorrectLevel.H,
+      backgroundColor: Colors.white,
+    );
+  }
+
   Widget _buildLocationInfo(BuildContext context) {
     List<Widget> widgets = <Widget>[];
 
     widgets.add(Text(location.name, style: subtitleTextStyle));
+    widgets.add(SizedBox(height: 30.0));
+    widgets.add(_buildQRImage());
     widgets.add(SizedBox(height: 30.0));
     widgets.add(Text("Descripción: ${location.description}", style: subSubtitleTextStyle));
     widgets.add(Text("Dirección: ${location.address}", style: subSubtitleTextStyle));
@@ -19,22 +32,12 @@ class LocationInfoScreen extends StatelessWidget {
 
     if (location.images.isNotEmpty) {
       widgets.add(SizedBox(height: 30.0));
-    }
-
-    var imagenes = List<Image>();
-    for (var img in location.images) {
-      imagenes.add(Image.network(Client.getInstance().getBasePath() + img));
-    }
-    var imgGrid = GridView.count(
-      crossAxisCount: 3,
-      crossAxisSpacing: 4.0,
-      mainAxisSpacing: 8.0,
-      children: imagenes,
-      shrinkWrap: true,
-    );
-
-    if (location.images.isNotEmpty) {
-      widgets.add(imgGrid);
+      widgets.add(Text("Imágenes", style: subSubtitleTextStyle));
+      widgets.add(SizedBox(height: 30.0));
+      for (String img in location.images) {
+        widgets.add(Image.network(Client.getInstance().getBasePath() + img));
+      }
+      widgets.add(SizedBox(height: 30.0));
     }
 
     widgets.add(backButton(context));
