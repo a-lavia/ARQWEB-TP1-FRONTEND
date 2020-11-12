@@ -1,8 +1,13 @@
 @JS()
 // ignore: library_names
-library jsQR;
+library jsqr;
 
 import 'package:js/js.dart';
 
 @JS('jsQR')
-external scanQR(image, width, height);
+external Code scanQR(image, width, height);
+
+@JS()
+class Code {
+  external String get data;
+}

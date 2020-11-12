@@ -18,6 +18,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
 
   static VideoElement _webcamVideoElement;
   Widget _webcamWidget;
+  Timer _timer;
 
   void _readQR(Timer timer) {
     if (_webcamVideoElement != null && _webcamVideoElement.srcObject != null && _webcamVideoElement.srcObject.active) {
@@ -55,7 +56,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       _webcamVideoElement.play();
     });
 
-    Timer.periodic(Duration(seconds: 1), _readQR);
+    _timer = Timer.periodic(Duration(seconds: 1), _readQR);
   }
 
   @override
@@ -81,6 +82,9 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     _webcamVideoElement.captureStream().getVideoTracks().forEach((track) { track.stop(); });
     _webcamVideoElement.captureStream().getAudioTracks().forEach((track) { track.stop(); });
     _webcamVideoElement.srcObject = null;
+    if (_timer.isActive) {
+      _timer.cancel();
+    }
   }
 
 }
